@@ -7,21 +7,23 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include "untuplizero.h"
+#include "untuplizer.h"
 #include <vector>
 #include <string>
 #include <math.h>
+#include <TClonesArray.h>
 
 
-void NCU93() {
+void NCU95() {
 	
-        //string output="output_93_LT.root";
-	//string output="output_93_TTbar.root";
-        string output="output_93_TTbar_RB.root"; 
-	//string output="output_93_WJet.root";
-	//string output="output_93_DY.root";
-	//string output="output_93_QCD.root";
-	//string output="output_93_Signal.root";
+        //string output="output_95_LT.root";
+	//string output="output_94_TTbar.root";
+        string output="output_95_TTbar_RB.root"; 
+	//string output="output_94_WJet.root";
+	//string output="output_94_DY.root";
+	//string output="output_94_QCD.root";
+	//string output="output_94_Signal.root";
+
 	
 	TTree *tree;
 	TFile *f;
@@ -73,19 +75,33 @@ void NCU93() {
 	
 	
 	//local test
-    //for (int i=100;i<121;i++){
-    //f = TFile::Open("NCUGlobalTuples_M1250.root");
-    //TDirectory * dir = (TDirectory*)f->Get("NCUGlobalTuples_M1250.root:/tree");
+	// for (int i=100;i<121;i++){
+	//f = TFile::Open("NCUGlobalTuples_36.root");
+	//TDirectory * dir = (TDirectory*)f->Get("NCUGlobalTuples_36.root:/tree");
    
    //WJets
-   //for (int i=100;i<111;i++){ 
-   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/QCD/NCUGlobalTuples_%d.root",i));
+   //for (int i=100;i<110;i++){ 
+   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/WJets/0000/NCUGlobalTuples_%d.root",i));
    //TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/WJets/0000/NCUGlobalTuples_%d.root:/tree",i));
 
    //TTBar
-   //for (int i=100;i<121;i++){ 
-   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/QCD/NCUGlobalTuples_%d.root",i));
+   //for (int i=100;i<120;i++){ 
+   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TTBar/0000/NCUGlobalTuples_%d.root",i));
    //TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TTBar/0000/NCUGlobalTuples_%d.root:/tree",i));
+
+   //TTBar     RB o                                                                                                        
+   //for (int i=1;i<229;i++){
+     //if(i>95&&i<100) continue;
+     //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/Run2015B/TTBar/NCUGlobalTuples_%d.root",i));
+     //TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/Run2015B/TTBar/NCUGlobalTuples_%d.root:/tree",i));
+
+   //TTBar     RB   
+	//for (int i=36;i<37;i++){cout<<i<<endl;                                                                                                        
+	for (int i=1;i<229;i++){//cout<<i<<endl;
+	if((i>94&&i<100)||i==34||i==111||i==112||i==142||i==146||(i>148&&i<153)||i==157||i==161||i==163||i==182) continue;
+	 f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8/NCUGlobalTuples_%d.root",i));  if (!f || !f->IsOpen())continue;
+	 TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8/NCUGlobalTuples_%d.root:/tree",i));    
+  
 
 
    //QCD   
@@ -95,7 +111,7 @@ void NCU93() {
 
    //DY
    //for (int i=100;i<121;i++){
-   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/NCUGlobalTuples_%d.root",i));
+   //f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJets/NCUGlobalTuples_%d.root",i));
    //TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJets/NCUGlobalTuples_%d.root:/tree",i));
 
    
@@ -119,10 +135,14 @@ void NCU93() {
    
    
    
+   
+   
+   cout<<i<<endl;
+   
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
 	   
-	  // if (jentry % 50000 == 0)
-      //fprintf(stderr, "Processing event %lli of %lli\n", jentry + 1, nentries);
+     //if (jentry % 50000 == 0)
+	     //fprintf(stderr, "Processing event %lli of %lli\n", jentry + 1, nentries);
 	   
       //Long64_t ientry = LoadTree(jentry);
 	  //if (ientry < 0) break;
@@ -136,16 +156,17 @@ void NCU93() {
 	  Float_t pfMetCorrPhi=data.GetFloat("pfMetCorrPhi");
       Float_t pfMetCorrPt=data.GetFloat("pfMetCorrPt");
 	  Float_t* THINjetCISVV2=data.GetPtrFloat("THINjetCISVV2");
-	  Float_t* THINjetPt=data.GetPtrFloat("THINjetPt");
-	  Float_t* THINjetEta=data.GetPtrFloat("THINjetEta");
-	  Float_t* THINgenjetPx=data.GetPtrFloat("THINgenjetPx");
-	  Float_t* THINgenjetPy=data.GetPtrFloat("THINgenjetPy");
-	  Float_t* THINgenjetPz=data.GetPtrFloat("THINgenjetPz");
-	  Float_t* THINgenjetEn=data.GetPtrFloat("THINgenjetEn");
+	  TClonesArray* THINjetP4 = (TClonesArray*) data.GetPtrTObject("THINjetP4");
+	  //Float_t* THINjetPt=data.GetPtrFloat("THINjetPt");
+	  //Float_t* THINjetEta=data.GetPtrFloat("THINjetEta");
+	  //Float_t* THINgenjetPx=data.GetPtrFloat("THINgenjetPx");
+	  //Float_t* THINgenjetPy=data.GetPtrFloat("THINgenjetPy");
+	  //Float_t* THINgenjetPz=data.GetPtrFloat("THINgenjetPz");
+	  //Float_t* THINgenjetEn=data.GetPtrFloat("THINgenjetEn");
 	  Int_t    THINnJet    =data.GetInt("THINnJet");
-	  Int_t    info_runId    =data.GetInt("info_runId");
-	  Int_t    info_lumiSection    =data.GetInt("info_lumiSection");
-	  Int_t    info_eventId    =data.GetInt("info_eventId");
+	  Int_t    info_runId    =data.GetInt("runId");
+	  Int_t    info_lumiSection    =data.GetInt("lumiSection");
+	  Int_t    info_eventId    =data.GetInt("eventId");
 	  
 	  
 	  
@@ -162,15 +183,20 @@ void NCU93() {
 	  int b1=0,b2=1;
 	  int flag=0;
 	  
-	  if(THINjetPt[b1]<80||THINjetPt[b2]<30||THINjetEta[b1]>2.5||THINjetEta[b2]>2.5)continue;
+	  TLorentzVector* THINjetb1 = (TLorentzVector*)THINjetP4->At(b1);
+	  TLorentzVector* THINjetb2 = (TLorentzVector*)THINjetP4->At(b2);
+	  
+	  if(THINjetb1->Pt()<80||THINjetb2->Pt()<30||THINjetb1->Eta()>2.5||THINjetb2->Eta()>2.5)continue;
+	  
+	  
+	  
+  
 	   
 	  //cout<<"b1="<<THINjetCISVV2->at(b1)<<",b2="<< THINjetCISVV2->at(b2)<<endl;
 	  TLorentzVector  LorentzVectorB1,LorentzVectorB2,h1;
-	  LorentzVectorB1.SetPxPyPzE(THINgenjetPx[b1],THINgenjetPy[b1],THINgenjetPz[b1],THINgenjetEn[b1]);
-	  LorentzVectorB2.SetPxPyPzE(THINgenjetPx[b2],THINgenjetPy[b2],THINgenjetPz[b2],THINgenjetEn[b2]);
+	  LorentzVectorB1.SetPxPyPzE(THINjetb1->Px(),THINjetb1->Py(),THINjetb1->Pz(),THINjetb1->Energy());
+	  LorentzVectorB2.SetPxPyPzE(THINjetb2->Px(),THINjetb2->Py(),THINjetb2->Pz(),THINjetb2->Energy());
 	  h1=LorentzVectorB1+LorentzVectorB2;
-	  
-	  
 	  
 	  
 	  float deltaPhi= fabs(pfMetCorrPhi-LorentzVectorB1.Phi())<fabs(pfMetCorrPhi-LorentzVectorB2.Phi())?pfMetCorrPhi-LorentzVectorB1.Phi():pfMetCorrPhi-LorentzVectorB2.Phi();
@@ -192,7 +218,6 @@ void NCU93() {
 	  th2->Fill(fabs(deltaPhi),THINjetCISVV2[b1]+THINjetCISVV2[b2]);
 	  th2FourBin->Fill(fabs(deltaPhi),THINjetCISVV2[b1]+THINjetCISVV2[b2]);
 	  
-
 	  th1->Fill(h1.M());
 	  thr->Fill(deltaR);
 	  thPt->Fill(h1.Pt());
@@ -240,9 +265,9 @@ void NCU93() {
 	  th2FourBinCutMass->Fill(fabs(deltaPhi),THINjetCISVV2[b1]+THINjetCISVV2[b2]);
 	  
 	  if((THINjetCISVV2[b1]+THINjetCISVV2[b2])>1.2 && fabs(deltaPhi)<0.5){
-		  cout<<"run="<<info_runId<<" ,";
-		  cout<<"lumi="<<info_lumiSection<<" ,";
-		  cout<<"event="<<info_eventId<<endl;
+	    //cout<<"run="<<info_runId<<" ,";
+	    //cout<<"lumi="<<info_lumiSection<<" ,";
+	    //cout<<"event="<<info_eventId<<endl;
 	  }
 	  
    }
@@ -293,5 +318,6 @@ void NCU93() {
    th2->Draw("colz");
    //thr->Draw();
    ef->Write();
+
    
 }
