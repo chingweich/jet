@@ -78,7 +78,7 @@ void fitExclude0728_02()
   x.setRange("Range4",0,300) ; 
   x.setRange("Range5",0,400) ; 
   x.setRange("Range6",0,200) ; 
-  x.setRange("Range7",0,100) ; 
+  x.setRange("Range7",50,100) ; 
   x.setRange("Range8",150,400) ; 
 
   // Create a binned dataset that imports contents of TH1 and associates its contents to observable 'x'
@@ -130,13 +130,14 @@ void fitExclude0728_02()
    landau.paramOn(frame[9],Layout(0.55)) ;
  
   //fit with Landau convoluted with guass
-  RooRealVar mg("mg","mg",150,1,200) ;
+  RooRealVar mg("mg","mg",140,1,400) ;
   //mg.setConstant(kTRUE) ; 
-  RooRealVar sg("sg","sg",2,0.1,40) ;
+  RooRealVar sg("sg","sg",50,0.1,500) ;
   RooGaussian gaussx("gaussx","gaussx",x,mg,sg) ; 
- 
+   gaussx.fitTo(dh) ;
+
   x.setBins(10000);
-  RooFFTConvPdf lxg("lxg","landau (X) gauss",x,landau,gauss) ; 
+  RooFFTConvPdf lxg("lxg","landau (X) gauss",x,landau,gaussx) ; 
   lxg.fitTo(dh,Range("Range6")) ; 
   lxg.plotOn(frame[2],LineColor(kRed)) ;
   //landau.plotOn(frame[2],LineStyle(kDashed)) ;
@@ -294,7 +295,7 @@ RooFFTConvPdf lxg5("lxg","landau (X) gauss",x,landau,gauss) ;
    */
    // gauConBW +Landau
 
-   /*
+   
    RooRealVar sig1frac("sig1frac","fraction of component 1 in signal",0.1,0.,1.) ;
    RooLandau landauA("landauA","landauA",x,ml,sl) ;
    RooAddPdf Exp2("Exp2","Exp2",RooArgList(lxgB,landauA),sig1frac) ;
@@ -308,11 +309,11 @@ RooFFTConvPdf lxg5("lxg","landau (X) gauss",x,landau,gauss) ;
    Exp2.plotOn(frame[18],Components(landauA),LineStyle(kDashed)) ;
    //lxgB.plotOn(frame[18]) ;
    //landau.plotOn(frame[18],LineStyle(kDashed)) ;
-   */
+   
    // gauConBW+LandauConGa
    RooRealVar sig1frac2("sig1frac","fraction of component 1 in signal",0.1,0.,1.) ;
    //RooAddPdf Exp3("Exp3","Exp3",RooArgList(lxgB,lxg),sig1frac2) ;
-   RooRealVar nsig("nsig","signal events",0,100000);
+   RooRealVar nsig("nsig","signal events",0,50000);
    RooRealVar nbkg("nbkg","background events",0,600000);
    RooAddPdf Exp3("Exp3","Exp3",RooArgList(lxgB,lxg),RooArgList(nsig,nbkg)) ;
    lxg.fitTo(dh,Range("Range7,Range8")) ;
