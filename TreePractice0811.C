@@ -35,7 +35,7 @@ void TreePractice0811() {
 	string  masspoint[13]={"600","800","1000","1200","1400","1600","1800","2000","2500","3000","3500","4000","4500"};
 
 	//for (int massP=0;massP<13;massP++){
-	for (int massP=0;massP<1;massP++){
+	for (int massP=0;massP<13;massP++){
 		TString endfix =Form("tree/signal-%s.root",masspoint[massP].data());
 		TH1F* th1=new TH1F("deltaR","deltaR",40,0,1);
 		TH1F* th2=new TH1F("deltaRCut","deltaRCut",40,0,1);
@@ -82,19 +82,19 @@ void TreePractice0811() {
 
 
 		//Sig
-		 // for(int w=1;w<2;w++){
-		 //   f = TFile::Open(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root",masspoint[massP].data()));
-		 //   if (!f || !f->IsOpen())continue;
-		 //   TDirectory * dir = (TDirectory*)f->Get(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root:/tree",masspoint[massP].data()));
-		 //   dir->GetObject("treeMaker",tree);TFile *fw=new TFile(endfix.Data(),"recreate");
+		  for(int w=1;w<2;w++){
+		    f = TFile::Open(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root",masspoint[massP].data()));
+		    if (!f || !f->IsOpen())continue;
+		    TDirectory * dir = (TDirectory*)f->Get(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root:/tree",masspoint[massP].data()));
+		    dir->GetObject("treeMaker",tree);TFile *fw=new TFile(endfix.Data(),"recreate");
 
 
 		//DY
-		  for(int w=1;w<363;w++){
-       f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/crab_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ForEIKO/150729_202330/0000/NCUGlobalTuples_%d.root",w));
-       if (!f || !f->IsOpen())continue;
-       TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/crab_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ForEIKO/150729_202330/0000/NCUGlobalTuples_%d.root:/tree",w));
-       dir->GetObject("treeMaker",tree);TFile *fw=new TFile(Form("tree/DY-%d.root",w),"recreate");
+		//  for(int w=1;w<363;w++){
+       // f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/crab_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ForEIKO/150729_202330/0000/NCUGlobalTuples_%d.root",w));
+       // if (!f || !f->IsOpen())continue;
+       // TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/crab_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ForEIKO/150729_202330/0000/NCUGlobalTuples_%d.root:/tree",w));
+       // dir->GetObject("treeMaker",tree);TFile *fw=new TFile(Form("tree/DY-%d.root",w),"recreate");
 
 
       // TFile *fw;
@@ -154,7 +154,8 @@ void TreePractice0811() {
 		    
 		    FATsubjet_1.SetPxPyPzE(FATsubjetSDPx[0][0],FATsubjetSDPy[0][0],FATsubjetSDPz[0][0],FATsubjetSDCSV[0][0]);
 	            FATsubjet_2.SetPxPyPzE(FATsubjetSDPx[0][1],FATsubjetSDPy[0][1],FATsubjetSDPz[0][1],FATsubjetSDCSV[0][1]);
-	            
+	            if(FATsubjetSDCSV[0][0]>1 ||FATsubjetSDCSV[0][1]>1)continue;
+		    
 		    fatPt=FATjetP4_1->Pt();//BfatPt->Fill();
 		    fatCSV=FATjetCSV[0];//BfatCSV->Fill();
 		    sub1Pt=FATsubjet_1.Pt();//Bsub1Pt->Fill();
@@ -189,7 +190,7 @@ void TreePractice0811() {
 		 //treeP ->Write();
 		// delete fw;
 		//fw->Close();
-		hprof->Draw();
+		th1->Draw();
 		if(massP==0)c1->Print("tp/tp.pdf(");
 		else if (massP==12)c1->Print("tp/tp.pdf)");
 		else c1->Print("tp/tp.pdf");
