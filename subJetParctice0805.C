@@ -66,7 +66,7 @@ void subJetParctice0805() {
 
 			cout<<w<<endl;
 			TreeReader data(tree);
-			//data.Print();
+			data.Print();
 			Long64_t nentries = data.GetEntriesFast();
 			
 			
@@ -75,7 +75,7 @@ void subJetParctice0805() {
 				data.GetEntry(jentry);
 				TClonesArray* FATjetP4 = (TClonesArray*) data.GetPtrTObject("FATjetP4");
 				Float_t*  FATjetSDmass = data.GetPtrFloat("FATjetSDmass");
-				Float_t*  FATjetCSV = data.GetPtrFloat("FATjetCSV");
+				Float_t*  FATjetCISVV2 = data.GetPtrFloat("FATjetCISVV2");
 				Int_t* FATnSubSDJet=data.GetPtrInt("FATnSubSDJet");
 				Int_t FATnJet=data.GetInt("FATnJet");
 				
@@ -102,7 +102,7 @@ void subJetParctice0805() {
 				th3->Fill(FATjetP4_1->Pt());
 				th5->Fill(FATjetSDmass[0]);
 				if(FATsubjet_1.DeltaR(FATsubjet_2)>DRR[DR] &&(FATsubjetSDCSV[0][0]<0.432|| FATsubjetSDCSV[0][1]<0.432))continue;
-				if(FATsubjet_1.DeltaR(FATsubjet_2)<DRR[DR] && FATjetCSV[0]<0.432)continue;
+				if(FATsubjet_1.DeltaR(FATsubjet_2)<DRR[DR] && FATjetCISVV2[0]<0.432)continue;
 				th2->Fill(FATsubjet_1.DeltaR(FATsubjet_2));
 				th4->Fill(FATjetP4_1->Pt());
 				th6->Fill(FATjetSDmass[0]);
