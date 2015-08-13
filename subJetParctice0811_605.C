@@ -85,16 +85,16 @@ void subJetParctice0811_605() {
 			
 			
 			for (Long64_t jentry=0; jentry<nentries;jentry++) {
-				data.GetEntry(jentry);
-				TClonesArray* FATjetP4 = (TClonesArray*) data.GetPtrTObject("FATjetP4");
-				Float_t*  FATjetSDmass = data.GetPtrFloat("FATjetSDmass");
-				Float_t*  FATjetCISVV2 = data.GetPtrFloat("FATjetCISVV2");
-				Int_t* FATnSubSDJet=data.GetPtrInt("FATnSubSDJet");
-				Int_t FATnJet=data.GetInt("FATnJet");
-				
-				
-				if(FATnJet==0)continue;
-				TLorentzVector* FATjetP4_1 = (TLorentzVector*)FATjetP4->At(0);
+			  data.GetEntry(jentry);
+			  TClonesArray* FATjetP4 = (TClonesArray*) data.GetPtrTObject("FATjetP4");
+			  Float_t*  FATjetSDmass = data.GetPtrFloat("FATjetSDmass");
+			  Float_t*  FATjetCISVV2 = data.GetPtrFloat("FATjetCISVV2");
+			  Int_t* FATnSubSDJet=data.GetPtrInt("FATnSubSDJet");
+			  Int_t FATnJet=data.GetInt("FATnJet");
+			  
+			  
+			  if(FATnJet==0)continue;
+			  TLorentzVector* FATjetP4_1 = (TLorentzVector*)FATjetP4->At(0);
 				
 				if(FATjetP4_1->Pt()<200)continue;
 				//if(FATjetSDmass[0]<100||FATjetSDmass[0]>150)continue;
@@ -108,9 +108,10 @@ void subJetParctice0811_605() {
 				vector<float>   *FATsubjetSDCE =  data.GetPtrVectorFloat("FATsubjetSDCE", FATnSubSDJet[0]);
 				vector<float>   *FATsubjetSDCSV =  data.GetPtrVectorFloat("FATsubjetSDCSV", FATnSubSDJet[0]);
 				
-				FATsubjet_1.SetPxPyPzE(FATsubjetSDPx[0][0],FATsubjetSDPy[0][0],FATsubjetSDPz[0][0],FATsubjetSDCSV[0][0]);
-	            FATsubjet_2.SetPxPyPzE(FATsubjetSDPx[0][1],FATsubjetSDPy[0][1],FATsubjetSDPz[0][1],FATsubjetSDCSV[0][1]);
-	            
+				FATsubjet_1.SetPxPyPzE(FATsubjetSDPx[0][0],FATsubjetSDPy[0][0],FATsubjetSDPz[0][0],FATsubjetSDCE[0][0]);
+				FATsubjet_2.SetPxPyPzE(FATsubjetSDPx[0][1],FATsubjetSDPy[0][1],FATsubjetSDPz[0][1],FATsubjetSDCE[0][1]);
+				if(FATsubjetSDCSV[0][0]>1 ||FATsubjetSDCSV[0][1]>1 || FATjetCISVV2[0]>1 )continue;
+		    
 				th1->Fill(FATsubjet_1.DeltaR(FATsubjet_2));
 				th3->Fill(FATjetP4_1->Pt());
 				th5->Fill(FATjetSDmass[0]);
