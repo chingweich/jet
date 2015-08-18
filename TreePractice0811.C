@@ -38,7 +38,7 @@ void TreePractice0811() {
 
 		        //DY100-200
   
-	   for(int w=1;w<90;w++){ f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV3/DYHT100-%d.root",w);
+	  // for(int w=1;w<90;w++){ f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV3/DYHT100-%d.root",w);
 
     //DY200-400
  
@@ -57,7 +57,7 @@ void TreePractice0811() {
 
 
 // 	 //tt
-	  // isTT=1;TString endfix ="treeV3/TT.root"; for (int w=1;w<229;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8/NCUGlobalTuples_%d.root",w));  if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8/NCUGlobalTuples_%d.root:/tree",w));    dir->GetObject("treeMaker",tree);
+	   isTT=1; for (int w=1;w<174;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_0803/150803_175618/0000/NCUGlobalTuples_%d.root",w));  if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/crab_TT_TuneCUETP8M1_13TeV-powheg-pythia8_0803/150803_175618/0000/NCUGlobalTuples_%d.root:/tree",w));    dir->GetObject("treeMaker",tree);TString endfix =Form("treeV3/TT-%d.root",w);
 
   
 
