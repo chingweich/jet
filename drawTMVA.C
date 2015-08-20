@@ -38,6 +38,32 @@ TGraphAsymmErrors* getTGEff(TFile* tf1,string s1,string s2){
 	return temp;
 }
 
+void drawEff(TGraphAsymmErrors *th2,string s1,string s5,int drawOption,bool show=0){
+	
+	
+	
+		
+	th2->SetLineColor(42);
+	
+	th2->SetTitle(s5.data());
+	th2->Draw("AP");
+
+	
+	TLegend* leg ;
+    leg=new TLegend(0.8,0.85,x2NDC,y2NDC);
+	leg->SetFillColor(18);
+    leg->SetFillStyle(0);
+    leg->SetTextSize(0.03);
+    leg->SetBorderSize(2);
+    leg->AddEntry(th2,s1.data());
+
+	
+	leg->Draw("same");
+	if(drawOption==1)c1->Print ("TMVAPdf/TMVA.pdf(");
+	else if (drawOption==2)c1->Print ("TMVAPdf/TMVA.pdf)");
+	else c1->Print ("TMVAPdf/TMVA.pdf");
+}
+
 void drawEff(TGraphAsymmErrors *th2[],string s1,string s2,string s5,int drawOption,bool show=0){
 	
 	
@@ -78,6 +104,7 @@ void drawEff(TGraphAsymmErrors *th2[],string s1,string s2,string s3,string s4,st
 	}
 	
 	th2[0]->SetTitle(s5.data());
+	th2[0]->SetMaximum(1.1);
 	th2[0]->Draw("AP");
 	th2[1]->Draw("P,same");
 	th2[2]->Draw("P,same");
@@ -266,9 +293,17 @@ void drawTMVA(){
 	TF[3]=TFile::Open("BDTEff/signal-1200.root");
 	TGraphAsymmErrors* TG[4];
 	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"deltaR","deltaRCut");
-	drawEff(TG,"600","800","1000","1200","delta Eff",3);
+	drawEff(TG,"600","800","1000","1200","delta Eff (BDT>0)",3);
 	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtCut");
-	drawEff(TG,"600","800","1000","1200","Pt Eff",3);
+	drawEff(TG,"600","800","1000","1200","Eff vs. Pt (BDT>0)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","Pt15");
+	drawEff(TG,"600","800","1000","1200","Eff vs. Pt (BDT>0.15)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","Pt3");
+	drawEff(TG,"600","800","1000","1200","Eff vs. Pt (BDT>0.3)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtFat");
+	drawEff(TG,"600","800","1000","1200","Eff vs. Pt (FatjetCSV>0.605)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtSub");
+	drawEff(TG,"600","800","1000","1200","Eff vs. Pt (subjetCSV>0.605)",3);
 	for(int i=0;i<4;i++)TF[i]->Close();
 	
 	TF[0]=TFile::Open("BDTEff/signal-1600.root");
@@ -276,18 +311,37 @@ void drawTMVA(){
 	TF[2]=TFile::Open("BDTEff/signal-3000.root");
 	TF[3]=TFile::Open("BDTEff/signal-4500.root");
 	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"deltaR","deltaRCut");
-	drawEff(TG,"1600","2000","3000","4500","delta Eff",3);
+	drawEff(TG,"1600","2000","3000","4500","delta Eff (BDT>0)",3);
 	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtCut");
-	drawEff(TG,"1600","2000","3000","4500","Pt Eff",3);
+	drawEff(TG,"1600","2000","3000","4500","Eff vs. Pt (BDT>0)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","Pt15");
+	drawEff(TG,"1600","2000","3000","4500","Eff vs. Pt (BDT>0.15)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","Pt3");
+	drawEff(TG,"1600","2000","3000","4500","Eff vs. Pt (BDT>0.3)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtFat");
+	drawEff(TG,"1600","2000","3000","4500","Eff vs. Pt (FatjetCSV>0.605)",3);
+	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtSub");
+	drawEff(TG,"1600","2000","3000","4500","Eff vs. Pt (subjetCSV>0.605)",3);
 	for(int i=0;i<4;i++)TF[i]->Close();
 	
 	TF[0]=TFile::Open("BDTEff/TT.root");
 	TF[1]=TFile::Open("BDTEff/DY.root");
 	for (int i=0;i<2;i++)TG[i]=getTGEff(TF[i],"deltaR","deltaRCut");
-	drawEff(TG,"TT","DY","delta Eff",3);
-	for (int i=0;i<4;i++)TG[i]=getTGEff(TF[i],"Pt","PtCut");
-	drawEff(TG,"TT","DY","Pt Eff",2);
+	//drawEff(TG,"TT","DY","delta Eff",3);
+	drawEff(TG[1],"DY","deltaR Eff (BDT>0)",3);
+	for (int i=0;i<2;i++)TG[i]=getTGEff(TF[i],"Pt","PtCut");
+	//drawEff(TG,"TT","DY","Pt Eff",3);
+	drawEff(TG[1],"DY","Eff vs. Pt (BDT>0)",3);
+	for (int i=1;i<2;i++)TG[i]=getTGEff(TF[i],"Pt","Pt15");
+	drawEff(TG[1],"DY","Eff vs. Pt (BDT>0.15)",3);
+	for (int i=1;i<2;i++)TG[i]=getTGEff(TF[i],"Pt","Pt3");
+	drawEff(TG[1],"DY","Eff vs. Pt (BDT>0.3)",3);
+	for (int i=1;i<2;i++)TG[i]=getTGEff(TF[i],"Pt","PtFat");
+	drawEff(TG[1],"DY","Eff vs. Pt (FatjetCSV>0.605)",3);
+	for (int i=1;i<2;i++)TG[i]=getTGEff(TF[i],"Pt","PtSub");
+	drawEff(TG[1],"DY","Eff vs. Pt (subjetCSV>0.605)",2);
 	for(int i=0;i<2;i++)TF[i]->Close();
+	
 }
 
 
