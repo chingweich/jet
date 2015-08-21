@@ -358,6 +358,52 @@ void drawB(TH1F *th1[],string s1,string s2,string s3,string s4,string s6,int dra
 	c1->SetLogy(0);
 }
 
+void drawBS(TH1F *th1[],string s1,string s2,string s3,string s4,string s5,string s6,int drawOption,string s7="",string s8=""){
+	int color[5]={30,38,41,46,28};
+	float temp=0;
+	for(int i=0;i<5;i++){
+		th1[i]->Scale(1/th1[i]->Integral());
+		if(th1[i]->GetMaximum()>temp)temp=th1[i]->GetMaximum();
+	}
+	for(int i=0;i<5;i++){
+		th1[i]->SetMaximum(temp*1.2);
+		th1[i]->GetXaxis()->SetRangeUser(-0.6,+0.8);
+		th1[i]->SetLineColor(color[i]);
+	}
+	
+	th1[0]->SetTitle(s6.data());
+	th1[0]->SetTitleSize(0.04);
+	th1[0]->SetXTitle(s7.data());
+	th1[0]->SetYTitle(s8.data());
+	th1[0]->GetXaxis()->SetLabelSize(0.045);
+	th1[0]->GetYaxis()->SetLabelSize(0.045);
+	th1[0]->Draw();
+	th1[1]->Draw("same");
+	th1[2]->Draw("same");
+	th1[3]->Draw("same");
+	th1[4]->Draw("same");
+	TLegend* leg ;
+    leg=new TLegend(x1NDC,y1NDC,x2NDC,y2NDC);
+	leg->SetFillColor(18);
+    leg->SetFillStyle(0);
+    leg->SetTextSize(0.03);
+    leg->SetBorderSize(2);
+    leg->AddEntry(th1[0],s1.data());
+	leg->AddEntry(th1[1],s2.data());
+	leg->AddEntry(th1[2],s3.data());
+	leg->AddEntry(th1[3],s4.data());
+	leg->AddEntry(th1[4],s5.data());
+	leg->Draw("same");
+	
+	leg->Draw("same");
+	if(drawOption==1)c1->Print ("TMVAPdf/TMVAS.pdf(");
+	else if (drawOption==2)c1->Print ("TMVAPdf/TMVAS.pdf)");
+	else c1->Print ("TMVAPdf/TMVAS.pdf");
+	c1->SetLogy(0);
+}
+
+
+
 TH1F* drawE(TH1F* th1,TH1F* th2,bool show=0){
 	int nbins=200;
 	TH1F* temp=new TH1F("ROC","ROC",nbins,0,1);
@@ -379,6 +425,44 @@ TH1F* drawE(TH1F* th1,TH1F* th2,bool show=0){
 		temp->SetBinContent(i,temp3);
 	}
 	return temp;
+}
+
+void drawEES(TH1F *th1[],string s1,string s2,string s3,string s4,string s5,int drawOption,bool show=0){
+	
+	TH1F* th2[4];
+	for(int i=0;i<4;i++){
+		if (i==1&& show)th2[i]=drawE(th1[i+1],th1[0],1);
+		else th2[i]=drawE(th1[i+1],th1[0]);
+	}
+	//cout<<"yes"<<endl;
+	int color[5]={30,38,41,46,28};
+	
+	for(int i=0;i<4;i++){
+		
+		th2[i]->SetLineColor(color[i+1]);
+	}
+	
+	th2[0]->SetTitle(s5.data());
+	th2[0]->GetXaxis()->SetLabelSize(0.045);
+	th2[0]->GetYaxis()->SetLabelSize(0.045);
+	th2[0]->Draw();
+	th2[1]->Draw("same");
+	th2[2]->Draw("same");
+	th2[3]->Draw("same");
+	TLegend* leg ;
+    leg=new TLegend(0.2,0.2,0.3,0.4);
+	leg->SetFillColor(18);
+    leg->SetFillStyle(0);
+    leg->SetTextSize(0.03);
+    leg->SetBorderSize(2);
+    leg->AddEntry(th2[0],s1.data());
+	leg->AddEntry(th2[1],s2.data());
+	leg->AddEntry(th2[2],s3.data());
+	leg->AddEntry(th2[3],s4.data());
+	leg->Draw("same");
+	if(drawOption==1)c1->Print ("TMVAPdf/TMVAS.pdf(");
+	else if (drawOption==2)c1->Print ("TMVAPdf/TMVAS.pdf)");
+	else c1->Print ("TMVAPdf/TMVAS.pdf");
 }
 
 void drawEE(TH1F *th1[],string s1,string s2,string s3,string s4,string s5,int drawOption,bool show=0){
@@ -471,6 +555,25 @@ void drawTMVA(){
 	for(int i=1;i<5;i++)TH1[i]=(TH1F*)TF[i]->FindObjectAny("BDT");
 	drawB(TH1,"DY","1600","2000","3000","4500","DY",3,"BDT");
 	drawEE(TH1,"1600","2000","3000","4500","DY",3);
+	for(int i=0;i<5;i++)TF[i]->Close();
+	
+	TF[0]=TFile::Open("treeV4DYS/DY.root");
+	TF[1]=TFile::Open("treeV4DYS/signal-600.root");
+	TF[2]=TFile::Open("treeV4DYS/signal-800.root");
+	TF[3]=TFile::Open("treeV4DYS/signal-1000.root");
+	TF[4]=TFile::Open("treeV4DYS/signal-1200.root");
+	for(int i=0;i<5;i++)TH1[i]=(TH1F*)TF[i]->FindObjectAny("BDT");
+	drawBS(TH1,"DY","600","800","1000","1200","DY",1,"BDT");
+	drawEES(TH1,"600","800","1000","1200","DY",3);
+	for(int i=1;i<5;i++)TF[i]->Close();
+	
+	TF[1]=TFile::Open("treeV4DYS/signal-1600.root");
+	TF[2]=TFile::Open("treeV4DYS/signal-2000.root");
+	TF[3]=TFile::Open("treeV4DYS/signal-3000.root");
+	TF[4]=TFile::Open("treeV4DYS/signal-4500.root");
+	for(int i=1;i<5;i++)TH1[i]=(TH1F*)TF[i]->FindObjectAny("BDT");
+	drawBS(TH1,"DY","1600","2000","3000","4500","DY",3,"BDT");
+	drawEES(TH1,"1600","2000","3000","4500","DY",2);
 	for(int i=0;i<5;i++)TF[i]->Close();
 	
 	TF[0]=TFile::Open("treeV4TT/TT.root");
