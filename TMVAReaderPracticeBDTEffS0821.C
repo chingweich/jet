@@ -39,38 +39,60 @@ leg->SetBorderSize(2);
 
 using namespace TMVA;
 
-void TMVAReaderPracticeDYS0820() {
+void TMVAReaderPracticeBDTEffS0821() {
 	
   bool isTT=0;
     
 	string  masspoint[13]={"600","800","1000","1200","1400","1600","1800","2000","2500","3000","3500","4000","4500"};
 
-	for (int massP=0;massP<13;massP++){
-	//	 for (int massP=0;massP<1;massP++){
+	//	for (int massP=0;massP<13;massP++){
+		  for (int massP=0;massP<1;massP++){
+
+	  TH1F* th2=new TH1F("deltaR","deltaR",40,0,1);
+	  TH1F* th3=new TH1F("deltaRCut","deltaRCut",40,0,1);
+	  TH1F*th4,*th5;
+	  
+	  double bins[18]={200,250,300,350,400,450,500,600,700,800,900,1000,1250,1500,1750,2000,2500,3000};
+	  th4=new TH1F("Pt","Pt",17,bins);
+	  th5=new TH1F("PtCut","PtCut",17,bins);
+	  TH1F* th6 =new TH1F("PtFat","PtFat",17,bins);
+	  TH1F* th7 =new TH1F("PtSub","PtSub",17,bins);
+	  
+	  TH2F* th10=new TH2F("2D","2D",20,0,1,60,0,3000);
+	  TH1F* th11=new TH1F("deltaRFat","deltaRFat",40,0,1);
+	  TH1F* th12=new TH1F("deltaRSub","deltaRSub",40,0,1);
+
+	    
+	  //TH1F* th4=new TH1F("Pt","Pt",3000,200,3200);
+	  //TH1F* th5=new TH1F("PtCut","PtCut",3000,200,3200);
+	  string BDTEff;
 		
 		//Sig
-	  TString endfix =Form("treeV4DYS/signal-%s.root",masspoint[massP].data());for(int w=1;w<2;w++){f = TFile::Open(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root",masspoint[massP].data()));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root:/tree",masspoint[massP].data()));dir->GetObject("treeMaker",tree);
+	  //	      BDTEff="signal";TString endfix =Form("treeV4DT/signal-%s.root",masspoint[massP].data());for(int w=1;w<2;w++){f = TFile::Open(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root",masspoint[massP].data()));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data2/syu/13TeV/ZprimeZhbb/ZprimeToZhToZlephbb_narrow_M-%s_13TeV-madgraph.root:/tree",masspoint[massP].data()));dir->GetObject("treeMaker",tree);
 
 
 	  //DY100-200
   
-	    //      for(int w=1;w<90;w++){ f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DYS/DYHT100-%d.root",w);
+	  //	     BDTEff="DY100";for(int w=1;w<90;w++){ f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162742/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DT/DYHT100-%d.root",w);
 
     //DY200-400
- 
+	  
 	 
-	   //	       for(int w=1;w<45;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162821/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162821/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DYS/DYHT200-%d.root",w);
+	  //	       BDTEff="DY200"; for(int w=1;w<45;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162821/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162821/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DT/DYHT200-%d.root",w);
 
 
     //DY400-600
 
-	   //         for(int w=1;w<45;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162858/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162858/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DYS/DYHT400-%d.root",w);
+	  	      BDTEff="DY400"; for(int w=1;w<45;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162858/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162858/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DT/DYHT400-%d.root",w);
 
 
     //DY600-inf
    
-	   //	    for(int w=1;w<48;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162937/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162937/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DYS/DYHT600-%d.root",w);
+	  // 	   BDTEff="DY600";  for(int w=1;w<48;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162937/0000/NCUGlobalTuples_%d.root",w));if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/DYJetsHTBins25nsSamples/DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0803/150812_162937/0000/NCUGlobalTuples_%d.root:/tree",w));   dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DT/DYHT600-%d.root",w);
 
+
+//tt
+//	      isTT=1;BDTEff="TT"; for (int w=1;w<448;w++){f = TFile::Open(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8_0803/150803_175618/0000/NCUGlobalTuples_%d.root",w));  if (!f || !f->IsOpen())continue;TDirectory * dir = (TDirectory*)f->Get(Form("/data7/khurana/NCUGlobalTuples/SPRING15/TT_TuneCUETP8M1_13TeV-powheg-pythia8_0803/150803_175618/0000/NCUGlobalTuples_%d.root:/tree",w));    dir->GetObject("treeMaker",tree);TString endfix =Form("treeV4DT/TT-%d.root",w);
 
 
       // TFile *fw;
@@ -128,7 +150,7 @@ void TMVAReaderPracticeDYS0820() {
       reader2->AddVariable( "tau2", &tau2 );
 
       reader2->BookMVA("BDT method","weights/0826L.xml");
-      TH1F *th1 =new TH1F("BDT","BDT",100,-0.8,0.8);
+      TH1F *th1 =new TH1F("BDT","BDT",500,-0.8,0.8);
 		  
 		  for (Long64_t jentry=0; jentry<nentries;jentry++) {
 		    data.GetEntry(jentry);
@@ -189,13 +211,14 @@ void TMVAReaderPracticeDYS0820() {
 			
 		      }
 		      if(isOverlap)continue;
+		      if(FATjetP4_1->Pt()<200 || fabs(FATjetP4_1->Eta())>2.5)continue;
 		      
 		      isFAT=1;
 		    break;
 		    }
 		    if(!isFAT)continue;
 		    
-		    if(FATjetP4_1->Pt()<200)continue;
+		    
 		    
 		    Int_t* FATnSubSDJet=data.GetPtrInt("FATnSubSDJet");
 		    
@@ -252,16 +275,50 @@ void TMVAReaderPracticeDYS0820() {
 		    tau2=FATjetTau2[FATi];
 		    
 		    
-		    if(fatPt<=400)th1 ->Fill( reader->EvaluateMVA("BDT method"));
-		    else  th1 ->Fill( reader2->EvaluateMVA("BDT method"));
+		    th1 ->Fill( reader->EvaluateMVA("BDT method"));
+		    th2->Fill(delta_R);
+		    th4->Fill(fatPt);
+		    if(fatCSV>0.605){
+		      th6->Fill(fatPt);
+		      th11->Fill(delta_R);
+		    }
+		    if(sub1CSV>0.605 && sub2CSV>0.605 ){
+		      th7->Fill(fatPt);
+		      th12->Fill(delta_R);
+		    }
+		    th10->Fill(delta_R,fatPt);
+		    double BDTValue=0;
+		    if(fatPt<=400){
+		      th1 ->Fill( reader->EvaluateMVA("BDT method"));
+		      BDTValue=reader->EvaluateMVA("BDT method");
+		    }
+		    else{
+		      th1 ->Fill( reader2->EvaluateMVA("BDT method"));
+		      BDTValue=reader2->EvaluateMVA("BDT method");
+		    }
+		    if(BDTValue<0)continue;
+		    th3->Fill(delta_R);
+		    th5->Fill(fatPt);
+		    		    
 		  }
 		  th1->Write();
 		  
 		  fw->Close();
 		  
 		}	
-		
-		
+	     TFile *fws=new TFile(Form("BDTEffS/%s-%s.root",BDTEff.data(),masspoint[massP].data()),"recreate");
+	     th2->Write();
+	     th3->Write();
+	     th4->Write();
+	     th5->Write();
+	     th6->Write();
+	     th7->Write();
+	     
+	     th10->Write();
+	     th11->Write();
+	     th12->Write();
+
+	     fws->Close();
     }	    
     
 }
